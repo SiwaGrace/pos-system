@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
@@ -26,18 +26,24 @@ export default function ProductForm({
   initial,
   onSubmit,
 }: ProductFormProps) {
-  const [form, setForm] = useState(() =>
-    initial
-      ? {
-          name: initial.name,
-          price: String(initial.price),
-          stock: String(initial.stock),
-          barcode: initial.barcode ?? "",
-        }
-      : emptyForm,
-  );
+  const [form, setForm] = useState(emptyForm);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setErrors({});
+    setForm(
+      initial
+        ? {
+            name: initial.name,
+            price: String(initial.price),
+            stock: String(initial.stock),
+            barcode: initial.barcode ?? "",
+          }
+        : emptyForm,
+    );
+  }, [isOpen, initial]);
 
   function handleChange(field: string, value: string) {
     setForm((prev) => ({ ...prev, [field]: value }));

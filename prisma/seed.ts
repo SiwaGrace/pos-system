@@ -40,6 +40,8 @@ async function main() {
     { name: "Instant Coffee 100g", price: 38.25, stock: 2, barcode: "1008" },
   ];
 
+  await prisma.saleItem.deleteMany({});
+  await prisma.sale.deleteMany({});
   await prisma.product.deleteMany({});
 
   for (const product of products) {

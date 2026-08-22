@@ -12,17 +12,19 @@ export default async function DashboardPage() {
   if (!session?.user) redirect("/login");
 
   const startOfToday = todayStart();
+  const saleScope =
+    session.user.role === "CASHIER" ? { cashierId: session.user.id } : {};
 
   const [todaySalesAgg, todayCount, allTimeAgg, lowStockProducts] =
     await Promise.all([
       prisma.sale.aggregate({
         _sum: { total: true },
-        where: { createdAt: { gte: startOfToday } },
+        where: { createdAt: { gte: startOfToday }, ...saleScope },
       }),
       prisma.sale.count({
-        where: { createdAt: { gte: startOfToday } },
+        where: { createdAt: { gte: startOfToday }, ...saleScope },
       }),
-      prisma.sale.aggregate({ _sum: { total: true } }),
+      prisma.sale.aggregate({ _sum: { total: true }, where: saleScope }),
       prisma.product.findMany({
         where: { stock: { lte: LOW_STOCK_THRESHOLD } },
         orderBy: { stock: "asc" },

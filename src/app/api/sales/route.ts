@@ -122,7 +122,7 @@ export async function POST(request: Request) {
       });
 
       return sale;
-    });
+    }, { timeout: 15000, maxWait: 10000 });
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Failed to process sale";

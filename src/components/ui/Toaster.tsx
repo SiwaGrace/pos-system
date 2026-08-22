@@ -21,11 +21,11 @@ export default function Toaster() {
   const dismiss = useToastStore((state) => state.dismiss);
 
   return (
-    <div className="pointer-events-none fixed bottom-4 right-4 z-[60] flex flex-col gap-2">
+    <div className="pointer-events-none fixed left-1/2 top-4 z-[60] flex w-full max-w-sm -translate-x-1/2 flex-col items-center gap-2 px-4">
       {toasts.map((toastItem) => (
         <div
           key={toastItem.id}
-          className={`pointer-events-auto flex w-72 items-start gap-3 rounded-lg border-l-4 px-4 py-3 shadow-lg ${typeStyles[toastItem.type]}`}
+          className={`pointer-events-auto flex w-full items-start gap-3 rounded-lg border-l-4 px-4 py-3 shadow-lg ${typeStyles[toastItem.type]}`}
         >
           <span className="mt-0.5 text-sm font-bold">{icons[toastItem.type]}</span>
           <p className="flex-1 text-sm font-medium">{toastItem.message}</p>
